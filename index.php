@@ -15,14 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'tool_devcourse', language 'en'
+ * Main file
  *
  * @package    tool_devcourse
  * @copyright  2018 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+require_once(__DIR__ . '/../../../config.php');
 
-$string['helloworld'] = 'Hello world!';
-$string['pluginname'] = 'Dev course example';
+$url = new moodle_url('/admin/tool/devcourse/index.php');
+
+$PAGE->set_context(context_system::instance());
+$PAGE->set_url($url);
+$PAGE->set_pagelayout('report');
+$PAGE->set_title(get_string('helloworld', 'tool_devcourse'));
+$PAGE->set_heading(get_string('pluginname', 'tool_devcourse'));
+
+echo get_string('helloworld', 'tool_devcourse');
