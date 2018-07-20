@@ -26,3 +26,4 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['helloworld'] = 'Hello world!';
 $string['pluginname'] = 'Dev course example';
+$string['youareviewing'] = 'You are viewing course {$a}';
