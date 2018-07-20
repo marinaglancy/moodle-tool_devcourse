@@ -61,5 +61,18 @@ function xmldb_tool_devcourse_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2018072005, 'tool', 'devcourse');
     }
 
+    if ($oldversion < 2018072006) {
+
+        // Define key courseid (foreign) to be added to tool_devcourse.
+        $table = new xmldb_table('tool_devcourse');
+        $key = new xmldb_key('courseid', XMLDB_KEY_FOREIGN, ['courseid'], 'course', ['id']);
+
+        // Launch add key courseid.
+        $dbman->add_key($table, $key);
+
+        // Devcourse savepoint reached.
+        upgrade_plugin_savepoint(true, 2018072006, 'tool', 'devcourse');
+    }
+
     return true;
 }
