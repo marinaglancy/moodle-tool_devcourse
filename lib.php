@@ -15,26 +15,29 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Main file
+ * Callbacks for plugin tool_devcourse
  *
  * @package    tool_devcourse
  * @copyright  2018 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../../config.php');
+defined('MOODLE_INTERNAL') || die();
 
-$courseid = required_param('id', PARAM_INT);
-
-$url = new moodle_url('/admin/tool/devcourse/index.php', ['id' => $courseid]);
-
-$PAGE->set_context(context_system::instance());
-$PAGE->set_url($url);
-$PAGE->set_pagelayout('report');
-$PAGE->set_title(get_string('helloworld', 'tool_devcourse'));
-$PAGE->set_heading(get_string('pluginname', 'tool_devcourse'));
-
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('helloworld', 'tool_devcourse'));
-echo html_writer::div(get_string('youareviewing', 'tool_devcourse', $courseid));
-echo $OUTPUT->footer();
+/**
+ * Adds this plugin to the course administration menu
+ *
+ * @param navigation_node $navigation The navigation node to extend
+ * @param stdClass $course The course to object for the tool
+ * @param context $context The context of the course
+ * @return void|null return null if we don't want to display the node.
+ */
+function tool_devcourse_extend_navigation_course($navigation, $course, $context) {
+    $navigation->add(
+        get_string('pluginname', 'tool_devcourse'),
+        new moodle_url('/admin/tool/devcourse/index.php', ['id' => $course->id]),
+        navigation_node::TYPE_SETTING,
+        get_string('pluginname', 'tool_devcourse'),
+        'devcourse',
+        new pix_icon('icon', '', 'tool_devcourse'));
+}
