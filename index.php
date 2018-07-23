@@ -55,7 +55,7 @@ echo html_writer::div(format_string($course->fullname, true, ['context' => $cont
 
 // Display table.
 $table = new tool_devcourse_table('tool_devcourse', $courseid);
-$table->out(0, false);
+$table->out(20, false);
 
 // Link to add new entry.
 if (has_capability('tool/devcourse:edit', $context)) {
