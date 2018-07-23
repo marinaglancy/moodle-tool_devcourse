@@ -46,4 +46,10 @@ echo html_writer::div(format_string($course->fullname, true, ['context' => $cont
 $table = new tool_devcourse_table('tool_devcourse', $courseid);
 $table->out(0, false);
 
+// Link to add new entry.
+if (has_capability('tool/devcourse:edit', $context)) {
+    echo html_writer::div(html_writer::link(new moodle_url('/admin/tool/devcourse/edit.php', ['courseid' => $courseid]),
+        get_string('newentry', 'tool_devcourse')));
+}
+
 echo $OUTPUT->footer();

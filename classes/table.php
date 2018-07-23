@@ -49,14 +49,21 @@ class tool_devcourse_table extends table_sql {
 
         parent::__construct($uniqueid);
 
-        $this->define_columns(array('name', 'completed', 'priority', 'timecreated', 'timemodified'));
-        $this->define_headers(array(
+        $columns = array('name', 'completed', 'priority', 'timecreated', 'timemodified');
+        $headers = array(
             get_string('name', 'tool_devcourse'),
             get_string('completed', 'tool_devcourse'),
             get_string('priority', 'tool_devcourse'),
             get_string('timecreated', 'tool_devcourse'),
             get_string('timemodified', 'tool_devcourse'),
-        ));
+        );
+        $this->context = context_course::instance($courseid);
+        if (has_capability('tool/devcourse:edit', $this->context)) {
+            $columns[] = 'edit';
+            $headers[] = '';
+        }
+        $this->define_columns($columns);
+        $this->define_headers($headers);
         $this->pageable(true);
         $this->collapsible(false);
         $this->sortable(false);
@@ -64,8 +71,7 @@ class tool_devcourse_table extends table_sql {
 
         $this->define_baseurl($PAGE->url);
 
-        $this->context = context_course::instance($courseid);
-        $this->set_sql('name, completed, priority, timecreated, timemodified',
+        $this->set_sql('id, name, completed, priority, timecreated, timemodified',
             '{tool_devcourse}', 'courseid = ?', [$courseid]);
     }
 
@@ -118,5 +124,10 @@ class tool_devcourse_table extends table_sql {
      */
     protected function col_timemodified($row) {
         return userdate($row->timemodified, get_string('strftimedatetime'));
+    }
+
+    protected function col_edit($row) {
+        $url = new moodle_url('/admin/tool/devcourse/edit.php', ['id' => $row->id]);
+        return html_writer::link($url, get_string('edit'));
     }
 }
