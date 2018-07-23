@@ -25,6 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['completed'] = 'Completed';
+$string['description'] = 'Description';
 $string['devcourse:edit'] = 'Edit devcourse data';
 $string['devcourse:view'] = 'View devcourse data';
 $string['editentry'] = 'Edit entry';

@@ -54,6 +54,10 @@ class tool_devcourse_form extends moodleform {
         $mform->addElement('advcheckbox', 'completed',
             get_string('completed', 'tool_devcourse'));
 
+        $mform->addElement('editor', 'description_editor',
+            get_string('description', 'tool_devcourse'),
+            null, tool_devcourse_api::editor_options());
+
         $this->add_action_buttons();
     }
 

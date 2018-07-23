@@ -50,6 +50,11 @@ $PAGE->set_title($title);
 $PAGE->set_heading(get_string('pluginname', 'tool_devcourse'));
 
 $form = new tool_devcourse_form();
+if (!empty($entry->id)) {
+    file_prepare_standard_editor($entry, 'description',
+        tool_devcourse_api::editor_options($courseid),
+        $PAGE->context, 'tool_devcourse', 'entry', $entry->id);
+}
 $form->set_data($entry);
 
 $returnurl = new moodle_url('/admin/tool/devcourse/index.php', ['id' => $courseid]);

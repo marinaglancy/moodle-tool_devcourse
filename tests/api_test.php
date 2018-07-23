@@ -61,11 +61,13 @@ class tool_devcourse_api_testcase extends advanced_testcase {
             'courseid' => $course->id,
             'name' => 'testname1',
             'completed' => 1,
-            'priority' => 0
+            'priority' => 0,
+            'description' => 'description plain'
         ]);
         $entry = tool_devcourse_api::retrieve($entryid);
         $this->assertEquals($course->id, $entry->courseid);
         $this->assertEquals('testname1', $entry->name);
+        $this->assertEquals('description plain', $entry->description);
     }
 
     /**
@@ -79,11 +81,13 @@ class tool_devcourse_api_testcase extends advanced_testcase {
         ]);
         tool_devcourse_api::update((object)[
             'id' => $entryid,
-            'name' => 'testname2'
+            'name' => 'testname2',
+            'description' => 'description plain'
         ]);
         $entry = tool_devcourse_api::retrieve($entryid);
         $this->assertEquals($course->id, $entry->courseid);
         $this->assertEquals('testname2', $entry->name);
+        $this->assertEquals('description plain', $entry->description);
     }
 
     /**
@@ -98,5 +102,35 @@ class tool_devcourse_api_testcase extends advanced_testcase {
         tool_devcourse_api::delete($entryid);
         $entry = tool_devcourse_api::retrieve($entryid, 0, IGNORE_MISSING);
         $this->assertEmpty($entry);
+    }
+
+    public function test_description_editor() {
+        $this->setAdminUser();
+        $course = $this->getDataGenerator()->create_course();
+        $entryid = tool_devcourse_api::insert((object)[
+            'courseid' => $course->id,
+            'name' => 'testname1',
+            'description_editor' => [
+                'text' => 'description formatted',
+                'format' => FORMAT_HTML,
+                'itemid' => file_get_unused_draft_itemid()
+            ]
+        ]);
+        $entry = tool_devcourse_api::retrieve($entryid);
+        $this->assertEquals('description formatted', $entry->description);
+        tool_devcourse_api::update((object)[
+            'id' => $entryid,
+            'name' => 'testname2',
+            'description_editor' => [
+                'text' => 'description edited',
+                'format' => FORMAT_HTML,
+                'itemid' => file_get_unused_draft_itemid()
+            ]
+        ]);
+        $entry = tool_devcourse_api::retrieve($entryid);
+        $this->assertEquals($course->id, $entry->courseid);
+        $this->assertEquals('testname2', $entry->name);
+        $this->assertEquals('description edited', $entry->description);
+
     }
 }

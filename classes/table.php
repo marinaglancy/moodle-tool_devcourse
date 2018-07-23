@@ -51,9 +51,10 @@ class tool_devcourse_table extends table_sql {
 
         $this->set_attribute('id', 'tool_devcourse_overview');
 
-        $columns = array('name', 'completed', 'priority', 'timecreated', 'timemodified');
+        $columns = array('name', 'description', 'completed', 'priority', 'timecreated', 'timemodified');
         $headers = array(
             get_string('name', 'tool_devcourse'),
+            get_string('description', 'tool_devcourse'),
             get_string('completed', 'tool_devcourse'),
             get_string('priority', 'tool_devcourse'),
             get_string('timecreated', 'tool_devcourse'),
@@ -73,7 +74,8 @@ class tool_devcourse_table extends table_sql {
 
         $this->define_baseurl($PAGE->url);
 
-        $this->set_sql('id, name, completed, priority, timecreated, timemodified',
+        $this->set_sql('id, name, completed, priority, timecreated, timemodified, '.
+            'description, descriptionformat',
             '{tool_devcourse}', 'courseid = ?', [$courseid]);
     }
 
@@ -106,6 +108,19 @@ class tool_devcourse_table extends table_sql {
     protected function col_name($row) {
         return format_string($row->name, true,
             ['context' => $this->context]);
+    }
+
+    /**
+     * Displays column description
+     *
+     * @param stdClass $row
+     * @return string
+     */
+    protected function col_description($row) {
+        $options = tool_devcourse_api::editor_options();
+        $description = file_rewrite_pluginfile_urls($row->description, 'pluginfile.php',
+            $options['context']->id, 'tool_devcourse', 'entry', $row->id, $options);
+        return format_text($description, $row->descriptionformat, $options);
     }
 
     /**
