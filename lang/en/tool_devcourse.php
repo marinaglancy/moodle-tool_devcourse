@@ -24,6 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['completed'] = 'Completed';
 $string['helloworld'] = 'Hello world!';
+$string['name'] = 'Name';
 $string['pluginname'] = 'Dev course example';
+$string['priority'] = 'Priority';
+$string['timecreated'] = 'Created';
+$string['timemodified'] = 'Modified';
 $string['youareviewing'] = 'You are viewing course {$a}';

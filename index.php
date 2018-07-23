@@ -40,4 +40,9 @@ echo html_writer::div(get_string('youareviewing', 'tool_devcourse', $courseid));
 $course = $DB->get_record_sql("SELECT shortname, fullname FROM {course} WHERE id = ?", [$courseid]);
 echo html_writer::div(format_string($course->fullname)); // You should use context here but
 // it will be introduced in the later versions.
+
+// Display table.
+$table = new tool_devcourse_table('tool_devcourse', $courseid);
+$table->out(0, false);
+
 echo $OUTPUT->footer();
