@@ -123,7 +123,8 @@ class tool_devcourse_api {
         return [
             'maxfiles' => -1,
             'maxbytes' => 0,
-            'context' => $PAGE->context
+            'context' => $PAGE->context,
+            'noclean' => true,
         ];
     }
 }
