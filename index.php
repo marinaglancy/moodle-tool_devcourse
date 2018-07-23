@@ -39,11 +39,9 @@ $PAGE->set_heading(get_string('pluginname', 'tool_devcourse'));
 // Deleting an entry if specified.
 if ($deleteid = optional_param('delete', null, PARAM_INT)) {
     require_sesskey();
-    $record = $DB->get_record('tool_devcourse',
-        ['id' => $deleteid, 'courseid' => $courseid], '*', MUST_EXIST);
+    $record = tool_devcourse_api::retrieve($deleteid, $courseid);
     require_capability('tool/devcourse:edit', $PAGE->context);
-    $DB->delete_records('tool_devcourse', ['id' => $deleteid]);
-    // TODO code to delete entry should be in a separate function.
+    tool_devcourse_api::delete($record->id);
     redirect(new moodle_url('/admin/tool/devcourse/index.php', ['id' => $courseid]));
 }
 

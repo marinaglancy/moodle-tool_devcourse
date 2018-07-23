@@ -27,7 +27,7 @@ require_once(__DIR__ . '/../../../config.php');
 $id = optional_param('id', 0, PARAM_INT);
 if ($id) {
     // We are going to edit an entry.
-    $entry = $DB->get_record('tool_devcourse', ['id' => $id], '*', MUST_EXIST);
+    $entry = tool_devcourse_api::retrieve($id);
     $courseid = $entry->courseid;
     $urlparams = ['id' => $id];
     $title = get_string('newentry', 'tool_devcourse');
@@ -57,25 +57,11 @@ if ($form->is_cancelled()) {
     redirect($returnurl);
 } else if ($data = $form->get_data()) {
     if ($data->id) {
-        // Edit entry. Never modify courseid.
-        $DB->update_record('tool_devcourse', [
-            'id' => $data->id,
-            'name' => $data->name,
-            'completed' => $data->completed,
-            'timemodified' => time()
-        ]);
-        // TODO there should be a function in another file that updates an entry.
+        // Update entry.
+        tool_devcourse_api::update($data);
     } else {
         // Add entry.
-        $DB->insert_record('tool_devcourse', [
-            'courseid' => $data->courseid,
-            'name' => $data->name,
-            'completed' => $data->completed,
-            'priority' => 0,
-            'timecreated' => time(),
-            'timemodified' => time()
-        ]);
-        // TODO there should be a function in another file that creates an entry.
+        tool_devcourse_api::insert($data);
     }
     redirect($returnurl);
 }
