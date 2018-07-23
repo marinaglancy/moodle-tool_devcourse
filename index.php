@@ -27,10 +27,12 @@ require_once(__DIR__ . '/../../../config.php');
 $courseid = required_param('id', PARAM_INT);
 
 $url = new moodle_url('/admin/tool/devcourse/index.php', ['id' => $courseid]);
-
-$PAGE->set_context(context_system::instance());
 $PAGE->set_url($url);
-$PAGE->set_pagelayout('report');
+
+require_login($courseid);
+$context = context_course::instance($courseid);
+require_capability('tool/devcourse:view', $context);
+
 $PAGE->set_title(get_string('helloworld', 'tool_devcourse'));
 $PAGE->set_heading(get_string('pluginname', 'tool_devcourse'));
 
@@ -38,8 +40,7 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('helloworld', 'tool_devcourse'));
 echo html_writer::div(get_string('youareviewing', 'tool_devcourse', $courseid));
 $course = $DB->get_record_sql("SELECT shortname, fullname FROM {course} WHERE id = ?", [$courseid]);
-echo html_writer::div(format_string($course->fullname)); // You should use context here but
-// it will be introduced in the later versions.
+echo html_writer::div(format_string($course->fullname, true, ['context' => $context]));
 
 // Display table.
 $table = new tool_devcourse_table('tool_devcourse', $courseid);
