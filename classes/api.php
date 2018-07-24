@@ -72,6 +72,15 @@ class tool_devcourse_api {
                 'description' => 1, 'descriptionformat' => 1]);
         $updatedata['timemodified'] = time();
         $DB->update_record('tool_devcourse', $updatedata);
+
+        // Trigger event.
+        $entry = self::retrieve($data->id);
+        $event = \tool_devcourse\event\entry_updated::create([
+            'context' => context_course::instance($entry->courseid),
+            'objectid' => $entry->id
+        ]);
+        $event->add_record_snapshot('tool_devcourse', $entry);
+        $event->trigger();
     }
 
     /**
@@ -101,6 +110,13 @@ class tool_devcourse_api {
             $DB->update_record('tool_devcourse', $updatedata);
         }
 
+        // Trigger event.
+        $event = \tool_devcourse\event\entry_created::create([
+            'context' => context_course::instance($data->courseid),
+            'objectid' => $entryid
+        ]);
+        $event->trigger();
+
         return $entryid;
     }
 
@@ -111,7 +127,18 @@ class tool_devcourse_api {
      */
     public static function delete(int $id) {
         global $DB;
+        if (!$entry = self::retrieve($id, 0, IGNORE_MISSING)) {
+            return;
+        }
         $DB->delete_records('tool_devcourse', ['id' => $id]);
+
+        // Trigger event.
+        $event = \tool_devcourse\event\entry_deleted::create([
+            'context' => context_course::instance($entry->courseid),
+            'objectid' => $entry->id
+        ]);
+        $event->add_record_snapshot('tool_devcourse', $entry);
+        $event->trigger();
     }
 
     /**
