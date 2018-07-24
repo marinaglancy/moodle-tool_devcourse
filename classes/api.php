@@ -127,4 +127,14 @@ class tool_devcourse_api {
             'noclean' => true,
         ];
     }
+
+    /**
+     * Observer for course_deleted event - deletes all associated entries
+     *
+     * @param \core\event\course_deleted $event
+     */
+    public static function course_deleted_observer(\core\event\course_deleted $event) {
+        global $DB;
+        $DB->delete_records('tool_devcourse', ['courseid' => $event->objectid]);
+    }
 }

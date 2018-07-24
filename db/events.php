@@ -15,17 +15,20 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information
+ * Add event handlers for the tool_devcourse
  *
  * @package    tool_devcourse
  * @copyright  2018 Marina Glancy
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018072402; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2018050800; // Requires this Moodle version.
-$plugin->release   = 'v2.3';     // Release name.
-$plugin->maturity  = MATURITY_STABLE;  // Maturity.
-$plugin->component = 'tool_devcourse'; // Full name of the plugin (used for diagnostics).
+$observers = array(
+
+    array(
+        'eventname' => '\core\event\course_deleted',
+        'callback' => 'tool_devcourse_api::course_deleted_observer',
+    ),
+);
