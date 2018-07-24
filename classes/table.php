@@ -149,6 +149,7 @@ class tool_devcourse_table extends table_sql {
             ['delete' => $row->id, 'id' => $this->context->instanceid,
                 'sesskey' => sesskey()]);
         return html_writer::link($url, get_string('edit')) . '<br>' .
-            html_writer::link($deleteurl, get_string('delete'));
+            html_writer::link($deleteurl, get_string('delete'),
+                ['data-action' => 'deleteentry']);
     }
 }
