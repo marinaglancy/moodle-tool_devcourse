@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information
+ * Class tool_devcourse_renderer
  *
  * @package    tool_devcourse
  * @copyright  2018 Marina Glancy
@@ -24,8 +24,26 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018072400; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2018050800; // Requires this Moodle version.
-$plugin->release   = 'v2.2';     // Release name.
-$plugin->maturity  = MATURITY_STABLE;  // Maturity.
-$plugin->component = 'tool_devcourse'; // Full name of the plugin (used for diagnostics).
+use tool_devcourse\output\entries_list;
+
+/**
+ * Renderer for tool_devcourse
+ *
+ * @package    tool_devcourse
+ * @copyright  2018 Marina Glancy
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class tool_devcourse_renderer extends plugin_renderer_base {
+
+    /**
+     * Renders an entries list.
+     *
+     * @param entries_list $list
+     * @return string HTML
+     */
+    protected function render_entries_list(entries_list $list) {
+        $context = $list->export_for_template($this);
+        return $this->render_from_template('tool_devcourse/entries_list', $context);
+    }
+
+}

@@ -45,20 +45,8 @@ if ($deleteid = optional_param('delete', null, PARAM_INT)) {
     redirect(new moodle_url('/admin/tool/devcourse/index.php', ['id' => $courseid]));
 }
 
-echo $OUTPUT->header();
-echo $OUTPUT->heading(get_string('helloworld', 'tool_devcourse'));
-echo html_writer::div(get_string('youareviewing', 'tool_devcourse', $courseid));
-$course = $DB->get_record_sql("SELECT shortname, fullname FROM {course} WHERE id = ?", [$courseid]);
-echo html_writer::div(format_string($course->fullname, true, ['context' => $context]));
-
-// Display table.
-$table = new tool_devcourse_table('tool_devcourse', $courseid);
-$table->out(20, false);
-
-// Link to add new entry.
-if (has_capability('tool/devcourse:edit', $context)) {
-    echo html_writer::div(html_writer::link(new moodle_url('/admin/tool/devcourse/edit.php', ['courseid' => $courseid]),
-        get_string('newentry', 'tool_devcourse')));
-}
-
-echo $OUTPUT->footer();
+$outputpage = new \tool_devcourse\output\entries_list($courseid);
+$output = $PAGE->get_renderer('tool_devcourse');
+echo $output->header();
+echo $output->render($outputpage);
+echo $output->footer();
