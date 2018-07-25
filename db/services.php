@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information
+ * Web services for tool_devcourse
  *
  * @package    tool_devcourse
  * @copyright  2018 Marina Glancy
@@ -24,8 +24,22 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018072500; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2018050800; // Requires this Moodle version.
-$plugin->release   = 'v2.5';     // Release name.
-$plugin->maturity  = MATURITY_STABLE;  // Maturity.
-$plugin->component = 'tool_devcourse'; // Full name of the plugin (used for diagnostics).
+// We defined the web service functions to install.
+$functions = array(
+    'tool_devcourse_delete_entry' => array(
+        'classname'    => 'tool_devcourse_external',
+        'methodname'   => 'delete_entry',
+        'description'  => 'Deletes an entry',
+        'type'         => 'write',
+        'capabilities' => 'tool/devcourse:edit',
+        'ajax'         => true,
+    ),
+    'tool_devcourse_entries_list' => array(
+        'classname'    => 'tool_devcourse_external',
+        'methodname'   => 'entries_list',
+        'description'  => 'Returns list of entries',
+        'type'         => 'read',
+        'capabilities' => 'tool/devcourse:view',
+        'ajax'         => true,
+    ),
+);

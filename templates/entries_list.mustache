@@ -20,10 +20,12 @@
     Template for the list of etries.
 
     Classes required for JS:
-    -
+     * tool_devcourse_entries_list
 
     Data attributes required for JS:
-    -
+     * data-entryid
+     * data-action
+     * data-courseid
 
     Context variables required for this template:
     -
@@ -37,6 +39,7 @@
     }
 }}
 
+<div class="tool_devcourse_entries_list" data-courseid="{{courseid}}">
 <h2>{{#str}} helloworld , tool_devcourse {{/str}}</h2>
 <p>{{#str}} youareviewing , tool_devcourse , {{courseid}} {{/str}}</p>
 <p>{{{coursename}}}</p>
@@ -46,6 +49,7 @@
 {{#addlink}}
     <div><a role="button" href="{{addlink}}" class="btn btn-primary">{{#str}} newentry , tool_devcourse {{/str}}</a></div>
 {{/addlink}}
+</div>
 
 {{#js}}
     require(
